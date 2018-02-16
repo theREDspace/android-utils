@@ -1,1 +1,9 @@
-include ':app'
+Closure allModules = {
+    def list = []
+    rootDir.eachDir(){ dir ->
+        dir.eachFileMatch({ (((String) it) == 'build.gradle') }, { list += [dir.name] })
+    }
+    list.toArray(new String[0])
+}
+
+include allModules()
