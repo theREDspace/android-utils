@@ -12,9 +12,13 @@ import android.view.View
  * the start position of the RecyclerView. if paddingFactor is bigger than 0.0f when
  * it moves the snapping point by a percentage of the size of the RecyclerView and also
  * adds a padding on the first and last items of the list.
+ *
+ * Examples: <ul>
+ * <li>0.3f means that snap starts at 30% of the size of the RecyclerView.</li>
+ * <li>0.0f means the snap start at the beginning of the RecyclerView.</li>
+ * </ul>
+ *
  * @param paddingFactor factor of padding from the start. This parameter should be between 0.0f and 1.0f.
- * Examples 0.3f means that snap starts at 30% of the size of the RecyclerView.
- * 0.0f means the snap start at the beginning of the RecyclerView.
  */
 class SnapToPercentHelper(
         private val paddingFactor: Float = 0.0f

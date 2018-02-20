@@ -1,19 +1,28 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
-    ext.kotlin_version = '1.2.21'
-    ext.support_version = '27.0.2'
+    ext {
+        kotlinVersion = '1.2.21'
+        supportVersion = '27.0.2'
+
+        buildToolsVersion = '27.0.2'
+
+        versionCode = 1
+        versionName = '1.0'
+
+        minSdkVersion = 21
+        targetSdkVersion = 27
+        compileSdkVersion = 27
+
+        minifyEnabled = false
+    }
 
     repositories {
         google()
         jcenter()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -22,18 +31,4 @@ allprojects {
         google()
         jcenter()
     }
-}
-
-ext {
-    applicationId = 'com.redspace.androidutils'
-    versionCode = 1
-    versionName = '1.0'
-    minSdkVersion = 21
-    targetSdkVersion = 27
-    compileSdkVersion = 27
-    buildToolsVersion = "26.0.2"
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

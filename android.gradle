@@ -1,0 +1,74 @@
+apply from: "$rootDir/java.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply from: "$rootDir/kotlin.gradle"
+
+android {
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        generated {
+            java.srcDir "$buildDir/generated/source/apt/main"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled rootProject.ext.minifyEnabled
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// keep test cases from stealing focus
+// tasks.withType(JavaForkOptions) {
+//     jvmArgs '-Djava.awt.headless=true -Dapple.awt.UIElement=true'
+// }
+
+
+// Generate AndroidManifest.xml up front for each Android library module,
+project.plugins.forEach { plugin ->
+    if ('com.android.build.gradle.LibraryPlugin' == plugin.class.name) {
+        androidManifest(project)
+
+        android.sourceSets.each {
+            it.manifest.srcFile 'build/generated/AndroidManifest.xml'
+        }
+
+        task generateAndroidManifest() {
+            doLast {
+                androidManifest(project)
+            }
+        }
+
+        afterEvaluate {
+            tasks.forEach { task ->
+                if (task.name =~ /check.*Manifest/)
+                    task.dependsOn += 'generateAndroidManifest'
+            }
+        }
+    }
+}
+
+static def androidManifest(Project project) {
+    project.file('build/generated').mkdirs()
+    project.file('build/generated/AndroidManifest.xml').text = "<manifest package=\"com.redspace.${project.name}\" />"
+}
