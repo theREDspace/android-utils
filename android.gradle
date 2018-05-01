@@ -2,6 +2,7 @@ apply from: "$rootDir/java.gradle"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: "$rootDir/kotlin.gradle"
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     defaultConfig {
