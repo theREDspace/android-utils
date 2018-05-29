@@ -1,13 +1,13 @@
 # Redspace Android-Utils
 
-Redspace android-utils project is a collection of modules that provide useful functionality.
+Redspace android-utils project is a collection of modules that provide useful functionality for Android developers.
+
 
 ## Getting Started
 
-This project uses jitpack. To get a release, specific module, or specific tag/commit into your project.
-To see a list check [jitpack](https://jitpack.io/#theREDspace/android-utils/)
+This project uses [JITpack](https://jitpack.io/#theREDspace/android-utils/) for packaging, which provides on-the-fly build capability to get a release, specific module, or specific tag/commit into your project.
 
-you will need add the jitpack.io repository:
+Add the JITpack repository to your root `build.gradle` file:
 ```
 allprojects {
  repositories {
@@ -16,25 +16,22 @@ allprojects {
  }
 }
 ```
-and:
-```
-dependencies {
-	implementation 'com.github.theREDspace:android-utils:(release/tag/branch/commit)
-}
-```
-or for specific modules
-```
-dependencies {
-	implementation 'com.github.theREDspace.android-utils:MODULE:(release/tag/branch/commit)
-}
-```
-Note: do not add the jitpack.io repository under buildscript
 
+Add dependency entries for each module to each of your interested modules' `build.gradle` files:
+```
+dependencies {
+	implementation 'com.github.theREDspace.android-utils:${MODULE}:(release/tag/branch/commit)
+}
+```
+
+Note: do not add the jitpack.io repository under buildscript.
+
+Each directory in the project root (except `gradle`) is a module that can be imported.  Each module contains markdown with individual usage instructions.
 
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](contributing.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 
 ## Versioning
