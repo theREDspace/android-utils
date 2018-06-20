@@ -1,0 +1,9 @@
+apply plugin: 'java'
+apply from: "$rootDir/java.gradle"
+apply plugin: 'kotlin'
+apply from: "$rootDir/kotlin.gradle"
+
+group = 'com.github.theREDspace.android-utils'
+
+dependencies {
+}

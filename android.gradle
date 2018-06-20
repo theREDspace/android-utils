@@ -1,7 +1,7 @@
-apply from: "$rootDir/java.gradle"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: "$rootDir/kotlin.gradle"
+
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
@@ -37,6 +37,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+dependencies {
+    testImplementation "junit:junit:$junitVersion"
 }
 
 // keep test cases from stealing focus
