@@ -1,0 +1,11 @@
+{
+  "pre": [
+    "java",
+    "$rootDir/java.gradle",
+    "kotlin",
+    "$rootDir/kotlin.gradle"
+  ],
+  "post": [
+
+  ]
+}

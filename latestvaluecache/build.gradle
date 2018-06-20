@@ -1,9 +1,21 @@
-apply plugin: 'java'
-apply from: "$rootDir/java.gradle"
-apply plugin: 'kotlin'
-apply from: "$rootDir/kotlin.gradle"
+//apply plugin: 'java'
+//apply from: "$rootDir/java.gradle"
+//apply plugin: 'kotlin'
+//apply from: "$rootDir/kotlin.gradle"
+
+def initializer = PluginInitializer.getInstance()
+initializer.flush()
+
+initializer.addPlugin('java')
+initializer.addPlugin("$rootDir/java.gradle")
+initializer.addPlugin('kotlin')
+initializer.addPlugin("$rootDir/kotlin.gradle")
+
+initializer.initializePreScriptPlugins(this)
 
 group = 'com.github.theREDspace.android-utils'
 
 dependencies {
 }
+
+initializer.initializePostScriptPlugins()
