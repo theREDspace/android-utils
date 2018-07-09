@@ -4,6 +4,7 @@ buildscript {
         supportVersion = '27.0.2'
 
         junitVersion = '4.12'
+        assertJVersion = '3.10.0'
 
         buildToolsVersion = '27.0.2'
 
