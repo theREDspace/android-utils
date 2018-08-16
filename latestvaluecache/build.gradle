@@ -3,8 +3,6 @@ apply from: "$rootDir/java.gradle"
 apply plugin: 'kotlin'
 apply from: "$rootDir/kotlin.gradle"
 
-group = 'com.github.theREDspace.android-utils'
-
 dependencies {
     implementation "io.reactivex.rxjava2:rxjava:2.1.14"
     testImplementation 'org.amshove.kluent:kluent:1.38'

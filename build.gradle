@@ -35,4 +35,6 @@ allprojects {
         google()
         jcenter()
     }
+
+    group = 'com.github.theREDspace.android-utils'
 }
