@@ -98,3 +98,21 @@ sealed class Duration(
         return "${this.duration} ${this.unit.name.toLowerCase().capitalize()}"
     }
 }
+
+fun TimeUnit.toDuration(duration: Long) = unitConstructor(this).invoke(duration)
+
+fun Long.toNanoseconds() = nanoseconds(this)
+fun Long.toMicroseconds() = microseconds(this)
+fun Long.toMilliseconds() = milliseconds(this)
+fun Long.toSeconds() = seconds(this)
+fun Long.toMinutes() = minutes(this)
+fun Long.toHours() = hours(this)
+fun Long.toDays() = days(this)
+
+fun Int.toNanoseconds() = this.toLong().toNanoseconds()
+fun Int.toMicroseconds() = this.toLong().toMicroseconds()
+fun Int.toMilliseconds() = this.toLong().toMilliseconds()
+fun Int.toSeconds() = this.toLong().toSeconds()
+fun Int.toMinutes() = this.toLong().toMinutes()
+fun Int.toHours() = this.toLong().toHours()
+fun Int.toDays() = this.toLong().toDays()

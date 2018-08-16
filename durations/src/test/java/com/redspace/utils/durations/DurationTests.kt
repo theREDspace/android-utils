@@ -194,4 +194,61 @@ class DurationTests {
         r.shouldBeFalse()
     }
 
+    @Test
+    fun `When I convert an Int, then my Duration is of the right Unit`() {
+        // GIVEN
+        val i = 10
+
+        // WHEN
+        val results = listOf(
+                Pair(i.toNanoseconds(), TimeUnit.NANOSECONDS),
+                Pair(i.toMicroseconds(), TimeUnit.MICROSECONDS),
+                Pair(i.toMilliseconds(), TimeUnit.MILLISECONDS),
+                Pair(i.toSeconds(), TimeUnit.SECONDS),
+                Pair(i.toMinutes(), TimeUnit.MINUTES),
+                Pair(i.toHours(), TimeUnit.HOURS),
+                Pair(i.toDays(), TimeUnit.DAYS)
+        )
+
+        // THEN
+        results.forEach { (duration, unit) -> duration.unit shouldEqual unit }
+    }
+
+    @Test
+    fun `When I convert a Long, then my Duration is of the right Unit`() {
+        // GIVEN
+        val i = 10L
+
+        // WHEN
+        val results = listOf(
+                Pair(i.toNanoseconds(), TimeUnit.NANOSECONDS),
+                Pair(i.toMicroseconds(), TimeUnit.MICROSECONDS),
+                Pair(i.toMilliseconds(), TimeUnit.MILLISECONDS),
+                Pair(i.toSeconds(), TimeUnit.SECONDS),
+                Pair(i.toMinutes(), TimeUnit.MINUTES),
+                Pair(i.toHours(), TimeUnit.HOURS),
+                Pair(i.toDays(), TimeUnit.DAYS)
+        )
+
+        // THEN
+        results.forEach { (duration, unit) -> duration.unit shouldEqual unit }
+    }
+
+    @Test
+    fun `When I create a Duration via TimeUnit, then my Duration is of the right Unit`() {
+        // WHEN
+        val results = listOf(
+                Pair(TimeUnit.NANOSECONDS.toDuration(10), TimeUnit.NANOSECONDS),
+                Pair(TimeUnit.MICROSECONDS.toDuration(10), TimeUnit.MICROSECONDS),
+                Pair(TimeUnit.MILLISECONDS.toDuration(10), TimeUnit.MILLISECONDS),
+                Pair(TimeUnit.SECONDS.toDuration(10), TimeUnit.SECONDS),
+                Pair(TimeUnit.MINUTES.toDuration(10), TimeUnit.MINUTES),
+                Pair(TimeUnit.HOURS.toDuration(10), TimeUnit.HOURS),
+                Pair(TimeUnit.DAYS.toDuration(10), TimeUnit.DAYS)
+        )
+
+        // THEN
+        results.forEach { (duration, unit) -> duration.unit shouldEqual unit }
+    }
+
 }
