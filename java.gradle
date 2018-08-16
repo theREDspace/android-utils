@@ -1,3 +1,5 @@
 dependencies {
     testCompile "junit:junit:$junitVersion"
 }
+
+apply plugin: 'maven'
