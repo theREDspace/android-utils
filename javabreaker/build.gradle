@@ -1,8 +1,6 @@
 apply plugin: 'java'
 apply from: "$rootDir/java.gradle"
 
-group = 'com.github.theREDspace.android-utils'
-
 dependencies {
     testCompile "junit:junit:$junitVersion"
     testCompile "org.assertj:assertj-core:$assertJVersion"

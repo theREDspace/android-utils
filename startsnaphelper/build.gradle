@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: "$rootDir/android.gradle"
 
-group = 'com.github.theREDspace.android-utils'
-
 dependencies {
     api "com.android.support:recyclerview-v7:$supportVersion"
     api "com.android.support:appcompat-v7:$supportVersion"

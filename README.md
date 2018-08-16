@@ -28,6 +28,9 @@ Note: do not add the jitpack.io repository under buildscript.
 
 Each directory in the project root (except `gradle`) is a module that can be imported.  Each module contains markdown with individual usage instructions.
 
+Note that JITpack compiles components on demand, which means that, if you're the first user of a given commit, dependency resolution might fail the first time.  Please retry a few times before
+reporting issues.
+
 
 ## Contributing
 
