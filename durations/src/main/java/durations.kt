@@ -1,3 +1,5 @@
+package com.redspace.durations
+
 import java.util.concurrent.TimeUnit
 
 fun nanoseconds(ns: Long) = Duration.Nanoseconds(ns)
