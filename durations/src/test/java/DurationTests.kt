@@ -20,7 +20,7 @@ object InternedZerosSpec : Spek({
 
     cases.forEach { unit, zeroType ->
         describe("zero constant for the unit $unit") {
-            val duration = unitConstructor(unit)(0)
+            val duration = unit.toDuration(0)
             it("should equal $zeroType") {
                 duration shouldEqual zeroType
             }
