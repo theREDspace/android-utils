@@ -1,3 +1,5 @@
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    testImplementation "org.amshove.kluent:kluent:$kluentVersion"
 }

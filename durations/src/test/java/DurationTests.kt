@@ -1,13 +1,34 @@
 package com.redspace.durations
 
-import org.amshove.kluent.shouldBeFalse
-import org.amshove.kluent.shouldBeInstanceOf
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.*
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
-class DurationTests {
+object InternedZerosSpec : Spek({
+    val cases = mapOf(
+            TimeUnit.NANOSECONDS to Duration.Zero.nanoseconds,
+            TimeUnit.MICROSECONDS to Duration.Zero.microseconds,
+            TimeUnit.MILLISECONDS to Duration.Zero.milliseconds,
+            TimeUnit.SECONDS to Duration.Zero.seconds,
+            TimeUnit.MINUTES to Duration.Zero.minutes,
+            TimeUnit.HOURS to Duration.Zero.hours,
+            TimeUnit.DAYS to Duration.Zero.days
+    )
 
+    cases.forEach { unit, zeroType ->
+        describe("zero constant for the unit $unit") {
+            val duration = unitConstructor(unit)(0)
+            it("should equal $zeroType") {
+                duration shouldEqual zeroType
+            }
+        }
+    }
+})
+
+class DurationTests {
     @Test
     fun `Given two equal durations, when I compare them, then I expect a 0`() {
         // GIVEN
@@ -22,7 +43,7 @@ class DurationTests {
     }
 
     @Test
-    fun `Given a small duration, when I compare it to a large duration, then I expect a -1`() {
+    fun `Given a small duration, when I compare it to a large duration, then I expect below 0`() {
         // GIVEN
         val large = days(4)
         val small = hours(5)
@@ -31,11 +52,11 @@ class DurationTests {
         val result = small.compareTo(large)
 
         // THEN
-        result shouldEqual -1
+        result shouldBeLessThan 0
     }
 
     @Test
-    fun `Given a large duration, when I compare it to a small duration, then I expect a 1`() {
+    fun `Given a large duration, when I compare it to a small duration, then I expect more than 0`() {
         // GIVEN
         val large = days(4)
         val small = hours(5)
@@ -44,7 +65,7 @@ class DurationTests {
         val result = large.compareTo(small)
 
         // THEN
-        result shouldEqual 1
+        result shouldBeGreaterThan 0
     }
 
     @Test
@@ -120,7 +141,7 @@ class DurationTests {
         val us = ns.microseconds
 
         // THEN
-        us.duration shouldEqual 0
+        us shouldEqual zero
     }
 
     @Test
@@ -132,7 +153,7 @@ class DurationTests {
         val ms = us.milliseconds
 
         // THEN
-        ms.duration shouldEqual 0
+        ms shouldEqual zero
     }
 
     @Test
@@ -144,7 +165,7 @@ class DurationTests {
         val s = ms.seconds
 
         // THEN
-        s.duration shouldEqual 0
+        s shouldEqual zero
     }
 
     @Test
@@ -156,7 +177,7 @@ class DurationTests {
         val m = s.minutes
 
         // THEN
-        m.duration shouldEqual 0
+        m shouldEqual zero
     }
 
     @Test
@@ -168,7 +189,7 @@ class DurationTests {
         val h = m.hours
 
         // THEN
-        h.duration shouldEqual 0
+        h shouldEqual zero
     }
 
     @Test
@@ -180,7 +201,7 @@ class DurationTests {
         val d = h.days
 
         // THEN
-        d.duration shouldEqual 0
+        d shouldEqual zero
     }
 
     @Test

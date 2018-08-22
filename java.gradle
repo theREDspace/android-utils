@@ -1,5 +1,13 @@
+
 dependencies {
-    testCompile "junit:junit:$junitVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5Version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$junit5Version"
+    testCompileOnly "junit:junit:$junitVersion"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 apply plugin: 'maven'
