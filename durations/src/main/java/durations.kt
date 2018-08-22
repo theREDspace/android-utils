@@ -2,13 +2,14 @@ package com.redspace.durations
 
 import java.util.concurrent.TimeUnit
 
-fun nanoseconds(ns: Long) = Duration.Nanoseconds(ns)
-fun microseconds(us: Long) = Duration.Microseconds(us)
-fun milliseconds(ms: Long) = Duration.Milliseconds(ms)
-fun seconds(s: Long) = Duration.Seconds(s)
-fun minutes(m: Long) = Duration.Minutes(m)
-fun hours(h: Long) = Duration.Hours(h)
-fun days(d: Long) = Duration.Days(d)
+fun nanoseconds(ns: Long) = if (ns == 0L) Duration.Nanoseconds.Zero else Duration.Nanoseconds(ns)
+fun microseconds(us: Long) = if (us == 0L) Duration.Microseconds.Zero else Duration.Microseconds(us)
+fun milliseconds(ms: Long) = if (ms == 0L) Duration.Milliseconds.Zero else Duration.Milliseconds(ms)
+fun seconds(s: Long) = if (s == 0L) Duration.Seconds.Zero else Duration.Seconds(s)
+fun minutes(m: Long) = if (m == 0L) Duration.Minutes.Zero else Duration.Minutes(m)
+fun hours(h: Long) = if (h == 0L) Duration.Hours.Zero else Duration.Hours(h)
+fun days(d: Long) = if (d == 0L) Duration.Days.Zero else Duration.Days(d)
+val zero = Duration.Zero
 
 private fun unitConstructor(unit: TimeUnit): (Long) -> Duration = when (unit) {
     TimeUnit.NANOSECONDS -> ::nanoseconds
@@ -20,32 +21,91 @@ private fun unitConstructor(unit: TimeUnit): (Long) -> Duration = when (unit) {
     TimeUnit.DAYS -> ::days
 }
 
+/** Represents a time duration.
+ *
+ * Each instance of this class represents a different unit for measuring time.  You can use durations interchangeably
+ * as long as you don't care about their internal numerical value; to get a number out, use one of the type-specific
+ * accessors.
+ */
 sealed class Duration(
-        val duration: Long,
+        private val duration: Long,
         val unit: TimeUnit,
         private val order: Int
 ) : Comparable<Duration> {
-    class Nanoseconds(nanoseconds: Long) : Duration(nanoseconds, TimeUnit.NANOSECONDS, 0)
-    class Microseconds(microseconds: Long) : Duration(microseconds, TimeUnit.MICROSECONDS, 1)
-    class Milliseconds(milliseconds: Long) : Duration(milliseconds, TimeUnit.MILLISECONDS, 2)
-    class Seconds(seconds: Long) : Duration(seconds, TimeUnit.SECONDS, 3)
-    class Minutes(minutes: Long) : Duration(minutes, TimeUnit.MINUTES, 4)
-    class Hours(hours: Long) : Duration(hours, TimeUnit.HOURS, 5)
-    class Days(days: Long) : Duration(days, TimeUnit.DAYS, 6)
+    open class Nanoseconds internal constructor(nanoseconds: Long) : Duration(nanoseconds, TimeUnit.NANOSECONDS, 0) {
+        val value: Long get() = super.duration
+        override val nanoseconds get() = this
+        object Zero : Nanoseconds(0)
+    }
 
-    val nanoseconds: Duration.Nanoseconds
+    open class Microseconds internal constructor(microseconds: Long) : Duration(microseconds, TimeUnit.MICROSECONDS, 1) {
+        val value: Long get() = super.duration
+        override val microseconds get() = this
+        object Zero : Microseconds(0)
+    }
+
+    open class Milliseconds internal constructor(milliseconds: Long) : Duration(milliseconds, TimeUnit.MILLISECONDS, 2) {
+        val value: Long get() = super.duration
+        override val milliseconds get() = this
+        object Zero : Milliseconds(0)
+    }
+
+    open class Seconds internal constructor(seconds: Long) : Duration(seconds, TimeUnit.SECONDS, 3) {
+        val value: Long get() = super.duration
+        override val seconds get() = this
+        object Zero : Seconds(0)
+    }
+
+    open class Minutes internal constructor(minutes: Long) : Duration(minutes, TimeUnit.MINUTES, 4) {
+        val value: Long get() = super.duration
+        override val minutes get() = this
+        object Zero : Minutes(0)
+    }
+
+    open class Hours internal constructor(hours: Long) : Duration(hours, TimeUnit.HOURS, 5) {
+        val value: Long get() = super.duration
+        override val hours get() = this
+        object Zero : Hours(0)
+    }
+
+    open class Days internal constructor(days: Long) : Duration(days, TimeUnit.DAYS, 6) {
+        val value: Long get() = super.duration
+        override val days get() = this
+        object Zero : Days(0)
+    }
+
+    /** Represents the special duration 'zero'.
+     *
+     * This duration is the same for every unit and is specially optimized because of its commonality.
+     */
+    object Zero : Duration(0, TimeUnit.NANOSECONDS, 0) {
+        override val nanoseconds get() = Nanoseconds.Zero
+        override val microseconds get() = Microseconds.Zero
+        override val milliseconds get() = Milliseconds.Zero
+        override val seconds get() = Seconds.Zero
+        override val minutes get() = Minutes.Zero
+        override val hours get() = Hours.Zero
+        override val days get() = Days.Zero
+        override fun toString() = "duration IZero"
+
+        override fun equals(other: Any?) =
+                if (other is Duration && other.duration == 0L) true
+                else super.equals(other)
+    }
+
+    open val nanoseconds: Duration.Nanoseconds
         get() = nanoseconds(unit.toNanos(duration))
-    val microseconds: Duration.Microseconds
+    open val microseconds: Duration.Microseconds
         get() = microseconds(unit.toMicros(duration))
-    val milliseconds: Duration.Milliseconds
+    open val milliseconds: Duration.Milliseconds
         get() = milliseconds(unit.toMillis(duration))
-    val seconds: Duration.Seconds
+    open val seconds: Duration.Seconds
         get() = seconds(unit.toSeconds(duration))
-    val minutes: Duration.Minutes
+    open val minutes: Duration.Minutes
         get() = minutes(unit.toMinutes(duration))
-    val hours: Duration.Hours
+    open val hours: Duration.Hours
         get() = hours(unit.toHours(duration))
-    val days: Duration.Days
+    open val days: Duration.Days
         get() = days(unit.toDays(duration))
 
     private fun toUnit(unit: TimeUnit): Duration {
@@ -66,11 +126,19 @@ sealed class Duration(
         return Triple(toUnit(smallestUnit), other.toUnit(smallestUnit), smallestUnit)
     }
 
+    /** Adds two durations together.
+     *
+     * Minimizes loss of precision by first scaling to the smaller of the two units.
+     */
     operator fun plus(other: Duration): Duration {
         val (lhs, rhs, smallestUnit) = reducedOperands(other)
         return unitConstructor(smallestUnit)(lhs.duration + rhs.duration)
     }
 
+    /** Subtracts the other duration from this one.
+     *
+     * Minimizes loss of precision by first scaling to the smaller of the two units.
+     */
     operator fun minus(other: Duration): Duration {
         val (lhs, rhs, smallestUnit) = reducedOperands(other)
         return unitConstructor(smallestUnit)(lhs.duration - rhs.duration)
