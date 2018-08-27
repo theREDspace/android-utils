@@ -70,6 +70,15 @@ project.plugins.forEach { plugin ->
                     task.dependsOn += 'generateAndroidManifest'
             }
         }
+
+        task sourcesJar(type: Jar) {
+            from android.sourceSets.main.java.srcDirs
+            classifier = 'sources'
+        }
+
+        artifacts {
+            archives sourcesJar
+        }
     }
 }
 
