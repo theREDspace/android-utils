@@ -1,0 +1,9 @@
+apply plugin: 'java'
+apply from: "$rootDir/java.gradle"
+apply plugin: 'kotlin'
+apply from: "$rootDir/kotlin.gradle"
+apply from: "$rootDir/spek.gradle"
+
+dependencies {
+    implementation "io.reactivex.rxjava2:rxjava:2.1.14"
+}
